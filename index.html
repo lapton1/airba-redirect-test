@@ -1,16 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Opening Technodom...</title>
-  <script>
-    window.location.replace("https://www.technodom.kz/cms/promo/polaris2025november");
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Opening Technodom…</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      text-align: center;
+      background: #ffffff;
+      color: #333;
+    }
+    #fallback {
+      display: none;
+      margin-top: 20px;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 17px;
+      border-radius: 10px;
+      border: none;
+      background: #ff6f00; /* Technodom orange */
+      color: white;
+      cursor: pointer;
+    }
+  </style>
 
-    // Optional: Fallback (only needed if app fails to open)
-    setTimeout(() => {
-      window.location.href = "https://www.technodom.kz/cms/promo/polaris2025november";
-    }, 1500);
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const target = "https://www.technodom.kz/cms/promo/polaris2025november";
+
+      // Try to open the Technodom app (via universal link)
+      window.location.replace(target);
+
+      // After 1200ms, if still on page → show fallback button
+      setTimeout(() => {
+        if (!document.hidden) {
+          document.getElementById("fallback").style.display = "block";
+        }
+      }, 1200);
+    });
   </script>
 </head>
-<body></body>
+
+<body>
+  <h2>Opening Technodom…</h2>
+  <p>If the app did not open automatically, tap the button below.</p>
+
+  <div id="fallback">
+    <button onclick="window.location.href='https://www.technodom.kz/cms/promo/polaris2025november'">
+      Open in Technodom App
+    </button>
+  </div>
+</body>
 </html>
