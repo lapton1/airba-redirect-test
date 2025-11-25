@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Opening Technodom…</title>
+  <title>Открываем Technodom…</title>
+
   <style>
     body {
       margin: 0;
       padding: 40px 20px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       text-align: center;
-      background: #fff39a; /* BRIGHT yellow for visual testing */
+      background: #ffffff;
       color: #333;
     }
     #fallback {
@@ -32,12 +33,29 @@
     document.addEventListener("DOMContentLoaded", function () {
       const target = "https://www.technodom.kz/cms/promo/polaris2025november";
 
-      // Give WKWebView time to render BEFORE redirect
-      setTimeout(() => {
-        window.location.href = target;
-      }, 350); // slightly increased to ensure visibility
+      // --- Detect iOS device ---
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-      // Show fallback button after delay
+      // --- Detect if it's Safari (not WebView) ---
+      const isSafari = (() => {
+        const ua = navigator.userAgent.toLowerCase();
+        return ua.includes("safari") && !ua.includes("crios") && !ua.includes("fxios");
+      })();
+
+      // --- Detect WebView on iOS ---
+      const isIOSWebView = isIOS && !isSafari;
+
+      if (isIOSWebView) {
+        // iOS WKWebView → delay redirect for consistent UI rendering
+        setTimeout(() => {
+          window.location.href = target;
+        }, 700); // safe delay only for WKWebView
+      } else {
+        // Android + iOS Safari → instant redirect
+        window.location.replace(target);
+      }
+
+      // After delay → show fallback if page is still visible
       setTimeout(() => {
         if (!document.hidden) {
           document.getElementById("fallback").style.display = "block";
@@ -48,12 +66,12 @@
 </head>
 
 <body>
-  <h2>Opening Technodom…</h2>
-  <p>If the app does not open automatically, tap the button below.</p>
+  <h2>Открываем Technodom…</h2>
+  <p>Если приложение не открылось автоматически, нажмите кнопку ниже.</p>
 
   <div id="fallback">
     <button onclick="window.location.href='https://www.technodom.kz/cms/promo/polaris2025november'">
-      Open in Technodom App
+      Открыть в приложении Technodom
     </button>
   </div>
 </body>
