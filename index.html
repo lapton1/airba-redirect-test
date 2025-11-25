@@ -33,34 +33,34 @@
     document.addEventListener("DOMContentLoaded", function () {
       const target = "https://www.technodom.kz/cms/promo/polaris2025november";
 
-      // --- Detect iOS device ---
+      // Detect iOS device
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-      // --- Detect if it's Safari (not WebView) ---
+      // Detect if Safari (iOS only)
       const isSafari = (() => {
         const ua = navigator.userAgent.toLowerCase();
         return ua.includes("safari") && !ua.includes("crios") && !ua.includes("fxios");
       })();
 
-      // --- Detect WebView on iOS ---
+      // iOS WKWebView = iOS but NOT Safari
       const isIOSWebView = isIOS && !isSafari;
 
+      // --- WK-1 behavior ---
       if (isIOSWebView) {
-        // iOS WKWebView → delay redirect for consistent UI rendering
-        setTimeout(() => {
-          window.location.href = target;
-        }, 700); // safe delay only for WKWebView
+        // Do NOT attempt automatic redirect in WKWebView
+        // Always show fallback button
+        document.getElementById("fallback").style.display = "block";
       } else {
         // Android + iOS Safari → instant redirect
         window.location.replace(target);
-      }
 
-      // After delay → show fallback if page is still visible
-      setTimeout(() => {
-        if (!document.hidden) {
-          document.getElementById("fallback").style.display = "block";
-        }
-      }, 1500);
+        // Show fallback if redirect blocked (network, missing app)
+        setTimeout(() => {
+          if (!document.hidden) {
+            document.getElementById("fallback").style.display = "block";
+          }
+        }, 1500);
+      }
     });
   </script>
 </head>
